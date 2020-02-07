@@ -1,16 +1,29 @@
 import torch
+import torchvision
+from torchvision import transforms, datasets
+import matplotlib.pyplot as plt
 
-x = torch.Tensor([5, 3])
-y = torch.Tensor([2, 1])
+train = datasets.MNIST("", train=True, download=True, transform = transforms.Compose([transforms.ToTensor()]))
+test = datasets.MNIST("", train=False, download=True, transform = transforms.Compose([transforms.ToTensor()]))
 
-print(x*y)
+trainset = torch.utils.data.DataLoader(train, batch_size=10, shuffle=True)
+testset = torch.utils.data.DataLoader(train, batch_size=10, shuffle=True)
 
-x = torch.zeros([2, 5])
+for data in trainset:
+    print(data)
+    break
 
-print(x)
-
-print(x.shape)
-
-y = torch.rand([2, 5])
-
+X, y = data[0][0], data[1][0] 
+plt.imshow(X.view(28,28))
+plt.show()
 print(y)
+
+total = 0
+counter_dict = {0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0}
+
+for data in trainset:
+    Xi, yi = data
+    for y in yi:
+        counter_dict[int(y)] += 1
+
+print(counter_dict)
